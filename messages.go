@@ -62,6 +62,9 @@ func (d *DhcpMessage) UnmarshalBinary(data []byte) error {
 			return err
 		}
 		d.Options = append(d.Options, option)
+                if len(data) < int(optSize)+4 {
+                        return ErrUnexpectedEOF
+                }
 		data = data[optSize+4:]
 	}
 	return nil
@@ -117,6 +120,9 @@ func (d *DhcpRelayMessage) UnmarshalBinary(data []byte) error {
 			return err
 		}
 		d.Options = append(d.Options, option)
+                if len(data) < int(optSize)+4 {
+                        return ErrUnexpectedEOF
+                }
 		data = data[optSize+4:]
 	}
 	return nil

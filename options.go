@@ -290,6 +290,9 @@ func (o *IaNaOption) UnmarshalBinary(data []byte) error {
 			return err
 		}
 		o.IaNaOptions = append(o.IaNaOptions, option)
+                if len(data) < int(nextSize)+4 {
+                        return ErrUnexpectedEOF
+                }
 		optionData = optionData[nextSize+4:]
 	}
 	return nil
@@ -358,6 +361,9 @@ func (o *IaTaOption) UnmarshalBinary(data []byte) error {
 		}
 		o.IaTaOptions = append(o.IaTaOptions, option)
 		optionData = optionData[nextSize+4:]
+                if len(data) < int(nextSize)+4 {
+                        return ErrUnexpectedEOF
+                }
 	}
 	return nil
 }
@@ -431,6 +437,9 @@ func (o *IaAddrOption) UnmarshalBinary(data []byte) error {
 			return err
 		}
 		o.IAddrOptions = append(o.IAddrOptions, option)
+                if len(data) < int(nextSize)+4 {
+                        return ErrUnexpectedEOF
+                }
 		optionData = optionData[nextSize+4:]
 	}
 	return nil
@@ -754,6 +763,9 @@ func (o *UserClassOption) UnmarshalBinary(data []byte) error {
 	for len(data) > 0 {
 		size := binary.BigEndian.Uint16(data)
 		o.UserClassData = append(o.UserClassData, data[2:size+2])
+                if len(data) < int(size)+2 {
+                        return ErrUnexpectedEOF
+                }
 		data = data[size+2:]
 	}
 	return nil
@@ -802,6 +814,9 @@ func (o *VendorClassOption) UnmarshalBinary(data []byte) error {
 	for len(data) > 0 {
 		size := binary.BigEndian.Uint16(data)
 		o.VendorClassData = append(o.VendorClassData, data[2:size+2])
+		if len(data) < int(size)+2 {
+			return ErrUnexpectedEOF
+		}
 		data = data[size+2:]
 	}
 	return nil
@@ -1024,6 +1039,9 @@ func (o *NextHopOption) UnmarshalBinary(data []byte) error {
 			return err
 		}
 		o.NextHopOptions = append(o.NextHopOptions, option)
+		if len(optionData) < int(nextSize)+4 {
+			return ErrUnexpectedEOF
+		}
 		optionData = optionData[nextSize+4:]
 	}
 	return nil
